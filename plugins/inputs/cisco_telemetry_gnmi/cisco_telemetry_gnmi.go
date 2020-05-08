@@ -31,6 +31,7 @@ type CiscoTelemetryGNMI struct {
 	Addresses     []string          `toml:"addresses"`
 	Subscriptions []Subscription    `toml:"subscription"`
 	Aliases       map[string]string `toml:"aliases"`
+	Lookups       []Subscription    `toml:"lookup"`
 
 	// Optional subscription configuration
 	Encoding    string
@@ -55,6 +56,7 @@ type CiscoTelemetryGNMI struct {
 	acc     telegraf.Accumulator
 	cancel  context.CancelFunc
 	wg      sync.WaitGroup
+	lookup  map[string]map[string]map[string]interface{}
 
 	Log telegraf.Logger
 }
@@ -82,6 +84,7 @@ func (c *CiscoTelemetryGNMI) Start(acc telegraf.Accumulator) error {
 	var request *gnmi.SubscribeRequest
 	c.acc = acc
 	ctx, c.cancel = context.WithCancel(context.Background())
+	c.lookup = make(map[string]map[string]map[string]interface{})
 
 	// Validate configuration
 	if request, err = c.newSubscribeRequest(); err != nil {
@@ -134,6 +137,11 @@ func (c *CiscoTelemetryGNMI) Start(acc telegraf.Accumulator) error {
 	// Create a goroutine for each device, dial and subscribe
 	c.wg.Add(len(c.Addresses))
 	for _, addr := range c.Addresses {
+		hostname, _, _ := net.SplitHostPort(addr)
+		c.lookup[hostname] = make(map[string]map[string]interface{})
+		for _, lu := range c.Lookups {
+			c.lookup[hostname][lu.Path] = make(map[string]interface{})
+		}
 		go func(address string) {
 			defer c.wg.Done()
 			for ctx.Err() == nil {
@@ -154,7 +162,8 @@ func (c *CiscoTelemetryGNMI) Start(acc telegraf.Accumulator) error {
 // Create a new GNMI SubscribeRequest
 func (c *CiscoTelemetryGNMI) newSubscribeRequest() (*gnmi.SubscribeRequest, error) {
 	// Create subscription objects
-	subscriptions := make([]*gnmi.Subscription, len(c.Subscriptions))
+	subscriptions := make([]*gnmi.Subscription, len(c.Subscriptions)+len(c.Lookups))
+	var offset int
 	for i, subscription := range c.Subscriptions {
 		gnmiPath, err := parsePath(subscription.Origin, subscription.Path, "")
 		if err != nil {
@@ -165,6 +174,24 @@ func (c *CiscoTelemetryGNMI) newSubscribeRequest() (*gnmi.SubscribeRequest, erro
 			return nil, fmt.Errorf("invalid subscription mode %s", subscription.SubscriptionMode)
 		}
 		subscriptions[i] = &gnmi.Subscription{
+			Path:              gnmiPath,
+			Mode:              gnmi.SubscriptionMode(mode),
+			SampleInterval:    uint64(subscription.SampleInterval.Duration.Nanoseconds()),
+			SuppressRedundant: subscription.SuppressRedundant,
+			HeartbeatInterval: uint64(subscription.HeartbeatInterval.Duration.Nanoseconds()),
+		}
+		offset = i + 1
+	}
+	for j, subscription := range c.Lookups {
+		gnmiPath, err := parsePath(subscription.Origin, subscription.Path, "")
+		if err != nil {
+			return nil, err
+		}
+		mode, ok := gnmi.SubscriptionMode_value[strings.ToUpper(subscription.SubscriptionMode)]
+		if !ok {
+			return nil, fmt.Errorf("invalid subscription mode %s", subscription.SubscriptionMode)
+		}
+		subscriptions[offset+j] = &gnmi.Subscription{
 			Path:              gnmiPath,
 			Mode:              gnmi.SubscriptionMode(mode),
 			SampleInterval:    uint64(subscription.SampleInterval.Duration.Nanoseconds()),
@@ -268,6 +295,12 @@ func (c *CiscoTelemetryGNMI) handleSubscribeResponse(address string, reply *gnmi
 		// Inherent valid alias from prefix parsing
 		if len(prefixAliasPath) > 0 && len(aliasPath) == 0 {
 			aliasPath = prefixAliasPath
+		} else if len(aliasPath) == 0 {
+			// No alias -- this is a Lookup update
+			if err := c.updateLookups(tags, fields); err != nil {
+				c.Log.Debugf("Error updating lookup: %v", update)
+			}
+			continue
 		}
 
 		// Lookup alias if alias-path has changed
@@ -278,6 +311,9 @@ func (c *CiscoTelemetryGNMI) handleSubscribeResponse(address string, reply *gnmi
 			} else {
 				c.Log.Debugf("No measurement alias for GNMI path: %s", name)
 			}
+		}
+		if err := c.applyLookups(tags, fields); err != nil {
+			c.Log.Debug("Error adding lookup tags to measurement: %v", update)
 		}
 
 		// Group metrics
@@ -402,6 +438,27 @@ func (c *CiscoTelemetryGNMI) handlePath(path *gnmi.Path, tags map[string]string,
 	}
 
 	return builder.String(), aliasPath
+}
+
+func (c *CiscoTelemetryGNMI) updateLookups(tags map[string]string, fields map[string]interface{}) error {
+	for field, val := range fields {
+		for _, lu := range c.Lookups {
+			if field == lu.Path {
+				c.lookup[tags["source"]][field][tags["name"]] = val
+			}
+		}
+
+	}
+	return nil
+}
+
+func (c *CiscoTelemetryGNMI) applyLookups(tags map[string]string, fields map[string]interface{}) error {
+	for _, lu := range c.Lookups {
+		if t, ok := c.lookup[tags["source"]][lu.Path][tags["name"]]; ok {
+			tags[lu.Path] = t.(string)
+		}
+	}
+	return nil
 }
 
 //ParsePath from XPath-like string to GNMI path structure
