@@ -315,18 +315,20 @@ require (
 	k8s.io/client-go v0.20.4
 	k8s.io/klog/v2 v2.8.0 // indirect
 	k8s.io/utils v0.0.0-20201110183641-67b214c5f920 // indirect
-	modernc.org/cc/v3 v3.33.5 // indirect
-	modernc.org/ccgo/v3 v3.9.4 // indirect
-	modernc.org/libc v1.9.5 // indirect
-	modernc.org/mathutil v1.2.2 // indirect
+	modernc.org/cc/v3 v3.33.7 // indirect
+	modernc.org/ccgo/v3 v3.9.6 // indirect
+	modernc.org/libc v1.9.11 // indirect
+	modernc.org/mathutil v1.4.1 // indirect
 	modernc.org/memory v1.0.4 // indirect
 	modernc.org/opt v0.1.1 // indirect
-	modernc.org/sqlite v1.10.8
-	modernc.org/strutil v1.1.0 // indirect
+	modernc.org/sqlite v1.12.0
+	modernc.org/strutil v1.1.1 // indirect
 	modernc.org/token v1.0.0 // indirect
 	sigs.k8s.io/structured-merge-diff/v4 v4.1.0 // indirect
 	sigs.k8s.io/yaml v1.2.0 // indirect
 )
+
+require lukechampine.com/uint128 v1.1.1 // indirect
 
 // replaced due to https://github.com/satori/go.uuid/issues/73
 replace github.com/satori/go.uuid => github.com/gofrs/uuid v3.2.0+incompatible
