@@ -871,8 +871,8 @@ github.com/aws/aws-sdk-go-v2/service/dynamodb v1.30.2/go.mod h1:BzzW6QegtSMnC1Bh
 github.com/aws/aws-sdk-go-v2/service/dynamodbstreams v1.4.0/go.mod h1:bYsEP8w5YnbYyrx/Zi5hy4hTwRRQISSJS3RWrsGRijg=
 github.com/aws/aws-sdk-go-v2/service/dynamodbstreams v1.20.1 h1:kZR1TZ0VYcRK2LFiFt61EReplssCq9SZO4gVSYV1Aww=
 github.com/aws/aws-sdk-go-v2/service/dynamodbstreams v1.20.1/go.mod h1:ifHRXsCyLVIdvDaAScQnM7jtsXtoBZFmyZiLMex8FTA=
-github.com/aws/aws-sdk-go-v2/service/ec2 v1.149.3 h1:lnqML59lzhYHco9bzij13a5Vum9V6x8N28cTdfmRKd4=
-github.com/aws/aws-sdk-go-v2/service/ec2 v1.149.3/go.mod h1:BJ7bj2w9jaJZ8XGyPB3o5D1H/3J7c3Ck5GphtSlVHE4=
+github.com/aws/aws-sdk-go-v2/service/ec2 v1.149.4 h1:CGKvG+I3Qxly4jkKm3OCEeVNqcH6xUJ0NCGoqjytoGY=
+github.com/aws/aws-sdk-go-v2/service/ec2 v1.149.4/go.mod h1:XvYGmTpdybgh+aNRfm+XbnaJdjWXxPXvRPlp7YpTs1A=
 github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.3.0/go.mod h1:v8ygadNyATSm6elwJ/4gzJwcFhri9RqS8skgHKiwXPU=
 github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.11.1 h1:EyBZibRTVAs6ECHZOw5/wlylS9OcTzwyjeQMudmREjE=
 github.com/aws/aws-sdk-go-v2/service/internal/accept-encoding v1.11.1/go.mod h1:JKpmtYhhPs7D97NL/ltqz7yCkERFW5dOlHyVl66ZYF8=
@@ -883,8 +883,8 @@ github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.9.3 h1:/MpYo
 github.com/aws/aws-sdk-go-v2/service/internal/endpoint-discovery v1.9.3/go.mod h1:1Pf5vPqk8t9pdYB3dmUMRE/0m8u0IHHg8ESSiutJd0I=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.2.3/go.mod h1:7gcsONBmFoCcKrAqrm95trrMd2+C/ReYKP7Vfu8yHHA=
 github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.9.27/go.mod h1:EOwBD4J4S5qYszS5/3DpkejfuK+Z5/1uzICfPaZLtqw=
-github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.3 h1:x0N5ftQzgcfRpCpTiyZC40pvNUJYhzf4UgCsAyO6/P8=
-github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.3/go.mod h1:Ru7vg1iQ7cR4i7SZ/JTLYN9kaXtbL69UdgG0OQWQxW0=
+github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.4 h1:jRiWxyuVO8PlkN72wDMVn/haVH4SDCBkUt0Lf/dxd7s=
+github.com/aws/aws-sdk-go-v2/service/internal/presigned-url v1.11.4/go.mod h1:Ru7vg1iQ7cR4i7SZ/JTLYN9kaXtbL69UdgG0OQWQxW0=
 github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.17.2 h1:1oY1AVEisRI4HNuFoLdRUB0hC63ylDAN6Me3MrfclEg=
 github.com/aws/aws-sdk-go-v2/service/internal/s3shared v1.17.2/go.mod h1:KZ03VgvZwSjkT7fOetQ/wF3MZUvYFirlI1H5NklUNsY=
 github.com/aws/aws-sdk-go-v2/service/kinesis v1.6.0/go.mod h1:9O7UG2pELnP0hq35+Gd7XDjOLBkg7tmgRQ0y14ZjoJI=
