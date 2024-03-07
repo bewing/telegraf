@@ -107,9 +107,9 @@ require (
 	github.com/hashicorp/go-uuid v1.0.3
 	github.com/hashicorp/golang-lru/v2 v2.0.7
 	github.com/influxdata/go-syslog/v3 v3.0.0
-	github.com/influxdata/influxdb-observability/common v0.5.6
+	github.com/influxdata/influxdb-observability/common v0.5.7
 	github.com/influxdata/influxdb-observability/influx2otel v0.5.6
-	github.com/influxdata/influxdb-observability/otel2influx v0.5.6
+	github.com/influxdata/influxdb-observability/otel2influx v0.5.8
 	github.com/influxdata/line-protocol/v2 v2.2.1
 	github.com/influxdata/tail v1.0.1-0.20221130111531-19b97bffd978
 	github.com/influxdata/toml v0.0.0-20190415235208-270119a8ce65
@@ -456,7 +456,7 @@ require (
 	github.com/zitadel/oidc/v2 v2.12.0 // indirect
 	go.etcd.io/etcd/api/v3 v3.5.4 // indirect
 	go.opencensus.io v0.24.0 // indirect
-	go.opentelemetry.io/collector/consumer v0.84.0 // indirect
+	go.opentelemetry.io/collector/consumer v0.85.0 // indirect
 	go.opentelemetry.io/collector/semconv v0.87.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc v0.47.0 // indirect
 	go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp v0.47.0 // indirect
